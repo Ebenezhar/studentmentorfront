@@ -1,24 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import DoghnutChart from "./DoghnutChart";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Teachers from "./Teachers";
+import Login from "./Login";
+import Portal from "./Portal";
+import Students from "./Students";
+import { UserProvider } from "./usercontext";
+import CreateTeachers from "./CreateTeachers";
+import CreateStudents from "./CreateStudents";
+import EditTeacher from "./EditTeacher";
+import EditStudent from "./EditStudent";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <UserProvider>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/Portal" element={<Portal />}>
+            <Route path="TeachersList" element={<Teachers />} />
+            <Route
+              path="TeachersList/CreateTeachers"
+              element={<CreateTeachers />}
+            />
+            <Route
+              path="TeachersList/EditTeacher/:id"
+              element={<EditTeacher />}
+            />
+            <Route path="StudentList" element={<Students />} />
+            <Route
+              path="StudentList/CreateStudents"
+              element={<CreateStudents />}
+            />
+            <Route
+              path="StudentList/EditStudent/:id"
+              element={<EditStudent />}
+            />
+          </Route>
+        </Routes>
+      </UserProvider>
+    </BrowserRouter>
   );
 }
 
