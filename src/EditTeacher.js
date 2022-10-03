@@ -10,7 +10,7 @@ import { actionCreators } from './redux/action-creators';
 function EditTeacher() {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const teachersList = useSelector(state => state.teacherReducer);
+  const teachersList = useSelector(state => state.accountReducer);
   const { updateTeacher } = bindActionCreators(actionCreators, dispatch);
   // console.log(teachersList.data);
   // const userContextData = useContext(UserContext);
@@ -64,7 +64,7 @@ function EditTeacher() {
       try {
         setLoading(true);
         updateTeacher(values);
-        alert(teachersList.status)
+        // alert(teachersList.status)
         // await axios.put(`https://62c29ac6ff594c65675fe6f0.mockapi.io/teachers/${_id}`, values);
         navigation("/portal/teachersList")
       } catch (error) {

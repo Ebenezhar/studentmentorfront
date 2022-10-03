@@ -1,11 +1,21 @@
 import axios from "axios";
 import { useFormik } from "formik";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { bindActionCreators } from "redux";
+import { studentActionCreators } from "./redux/action-creators";
 
 function CreateStudents() {
   let navigation = useNavigate();
+  const dispatch = useDispatch();
+  const studentList = useSelector(state => state.accountReducer);
+  const { postStudent } = bindActionCreators(studentActionCreators, dispatch);
+  const [gender, setgender] = useState();
   let [isLoading, setLoading] = useState(false);
+  const handlegender = (e) => {
+    setgender(e.target.value)
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -40,12 +50,14 @@ function CreateStudents() {
       return errors;
     },
     onSubmit: async (values) => {
-      console.log(values);
-      await axios.post(
-        "https://62c29ac6ff594c65675fe6f0.mockapi.io/students",
-        values
-      );
+      postStudent(values);
+      alert(studentList.status);
       navigation("/portal/StudentList");
+      // await axios.post(
+      //   "https://62c29ac6ff594c65675fe6f0.mockapi.io/students",
+      //   values
+      // );
+      // navigation("/portal/StudentList");
     },
   });
 
@@ -94,23 +106,19 @@ function CreateStudents() {
           </div>
           <div className="col-lg-6">
             <label>Gender</label>
-            <br />
-            <input
-              type="radio"
-              id="male"
-              name="gender"
-              className="mr-2"
-              value={(formik.values.gender = "Male")}
-            />
-            <label for="male">Male</label>
-            <br />
-            <input
-              type="radio"
-              id="female"
-              name="gender"
-              value={(formik.values.gender = "Female")}
-            />
-            <label for="female">Female</label>
+            <div className="flex flex-row align-center">
+              <select name='gender' onClick={formik.handleChange}>
+                <option name="gender">
+                  -select gender-
+                </option>
+                <option name="gender" value={"male"}>
+                  Male
+                </option>
+                <option name="gender" value={"female"}>
+                  Female
+                </option>
+              </select>
+            </div>
           </div>
           <div className="col-lg-6">
             <input

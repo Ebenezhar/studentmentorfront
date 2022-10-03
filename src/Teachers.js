@@ -8,7 +8,7 @@ import UserContext from "./usercontext";
 
 function Teachers() {
   const dispatch = useDispatch();
-  const teacherList = useSelector(state => state.teacherReducer);
+  const teacherList = useSelector(state => state.accountReducer);
   const { readTeachers, deleteTeacher } = bindActionCreators(actionCreators, dispatch)
   // const userContextData = useContext(UserContext);
   useEffect(() => {
@@ -26,7 +26,7 @@ function Teachers() {
     if (ask) {
       try {
         deleteTeacher(id);
-        alert(teacherList.status)
+        // alert(teacherList.status)
         // await axios.delete(
         //   `https://62c29ac6ff594c65675fe6f0.mockapi.io/teachers/${id}`
         // );
@@ -110,6 +110,11 @@ function Teachers() {
                           className="btn btn-danger mr-1"
                         >
                           Delete
+                        </button>
+                        <button
+                          className="btn btn-primary mr-1"
+                        >
+                          Add student
                         </button>
                       </td>
                     </tr>

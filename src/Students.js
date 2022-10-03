@@ -1,18 +1,26 @@
 import axios from "axios";
 import React, { useContext, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { bindActionCreators } from "redux";
+import { studentActionCreators } from "./redux/action-creators";
+import { deleteStudent } from "./redux/action-creators/student-actions";
 import UserContext from "./usercontext";
 
 function Students() {
-  const userContextData = useContext(UserContext);
-  const studentsList = userContextData.students;
-
+  // const userContextData = useContext(UserContext);
+  // const studentsList = userContextData.students;
+  const dispatch = useDispatch();
+  const studentList = useSelector(state => state.accountReducer);
+  const { readStudents, deleteStudent } = bindActionCreators(studentActionCreators, dispatch)
   const handleDelete = async (id) => {
     let ask = window.confirm("Are you sure you want to delete this Id ?");
     if (ask) {
-      await axios.delete(
-        `https://62c29ac6ff594c65675fe6f0.mockapi.io/students/${id}`
-      );
+      deleteStudent(id);
+      alert(studentList.status)
+      // await axios.delete(
+      //   `https://62c29ac6ff594c65675fe6f0.mockapi.io/students/${id}`
+      // );
       fetchData();
     }
   };
@@ -20,10 +28,11 @@ function Students() {
     fetchData();
   }, []);
   let fetchData = async () => {
-    let userData = await axios.get(
-      "https://62c29ac6ff594c65675fe6f0.mockapi.io/students"
-    );
-    userContextData.setStudents(userData.data);
+    readStudents();
+    // let userData = await axios.get(
+    //   "https://62c29ac6ff594c65675fe6f0.mockapi.io/students"
+    // );
+    // userContextData.setStudents(userData.data);
   };
   return (
     <>
@@ -77,7 +86,7 @@ function Students() {
                 </tr>
               </tfoot>
               <tbody>
-                {studentsList.map((student) => {
+                {studentList.data.map((student) => {
                   return (
                     <tr>
                       <td>{student.name}</td>
@@ -86,13 +95,13 @@ function Students() {
                       <td>{student.gender}</td>
                       <td>
                         <Link
-                          to={`/portal/StudentList/EditStudent/${student.id}`}
+                          to={`/portal/StudentList/EditStudent/${student._id}`}
                           className="btn btn-info mr-1"
                         >
                           Edit
                         </Link>
                         <button
-                          onClick={() => handleDelete(student.id)}
+                          onClick={() => handleDelete(student._id)}
                           className="btn btn-danger mr-1"
                         >
                           Delete

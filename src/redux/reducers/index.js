@@ -1,10 +1,8 @@
 import { combineReducers } from "redux";
-import { loaderReducer } from "./loader-reducers";
-import { teacherReducer } from "./teacher-reducers";
-
+import { accountReducer } from "./account-reducers";
 const reducers = combineReducers({
-    loaderReducer: loaderReducer,
-    teacherReducer: teacherReducer
+    accountReducer: accountReducer
+
 })
 
 export default reducers;  

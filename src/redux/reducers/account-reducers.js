@@ -1,32 +1,32 @@
-const INIT_STATE = {
-    status: '',
+const initialstate = {
+    status: [],
     data: []
 }
 
-export const teacherReducer = (state = INIT_STATE, action) => {
+export const accountReducer = (state = initialstate, action) => {
     switch (action.type) {
-        case 'POST_TEACHER':
+        case 'POST':
             return {
                 ...state,
-                status: "" + action.payload
+                status: action.payload
             }
-        case 'READ_TEACHERS':
+        case 'READ':
             return {
                 ...state,
                 data: action.payload
             }
-        case 'UPDATE_TEACHER':
+        case 'UPDATE':
             {
                 return {
                     ...state,
-                    status: '' + action.payload
+                    status: action.payload
                 }
             }
-        case 'DELETE_TEACHER':
+        case 'DELETE':
             {
                 return {
                     ...state,
-                    status: '' + action.payload
+                    status: action.payload
                 }
             }
         default: return state;

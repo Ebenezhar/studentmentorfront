@@ -7,7 +7,7 @@ import { actionCreators } from './redux/action-creators';
 
 function CreateTeachers() {
   const dispatch = useDispatch();
-  const postData = useSelector(state => state.teacherReducer);
+  const postData = useSelector(state => state.accountReducer);
   const { postTeacher } = bindActionCreators(actionCreators, dispatch);
   let navigation = useNavigate();
   let [isLoading, setloading] = useState(false);
@@ -56,9 +56,9 @@ function CreateTeachers() {
     onSubmit: (values) => {
       try {
         postTeacher(values);
-        alert(postData.status)
+        // alert(postData.status)
         // await axios.post('https://62c29ac6ff594c65675fe6f0.mockapi.io/teachers', values);
-        navigation("/portal/teachersList")
+        // navigation("/portal/teachersList")
       } catch (error) {
         console.log(error);
       }

@@ -1,17 +1,23 @@
 import axios from "axios";
 import { useFormik } from "formik";
 import React, { useContext, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { studentActionCreators } from "./redux/action-creators";
+import { bindActionCreators } from "redux";
 import UserContext from "./usercontext";
 
 function EditStudent() {
   const { id } = useParams();
-  console.log(id);
   let navigation = useNavigate();
+  const dispatch = useDispatch();
+  const studentList = useSelector(state => state.accountReducer);
+  const { updateStudent } = bindActionCreators(studentActionCreators, dispatch)
   // let [isLoading, setLoading] = useState(false);
 
-  const userContextData = useContext(UserContext);
-  const StudentList = userContextData.students;
+  // const userContextData = useContext(UserContext);
+  // const StudentList = userContextData.students;
+
 
   const formik = useFormik({
     initialValues: {
@@ -49,17 +55,23 @@ function EditStudent() {
       return errors;
     },
     onSubmit: async (values) => {
-      await axios.put(
-        `https://62c29ac6ff594c65675fe6f0.mockapi.io/students/${id}`,
-        values
-      );
-      navigation("/portal/StudentList");
+      try {
+        updateStudent(values);
+        navigation("/portal/StudentList");
+      } catch (error) {
+        console.log(error);
+      }
+      // await axios.put(
+      //   `https://62c29ac6ff594c65675fe6f0.mockapi.io/students/${id}`,
+      //   values
+      // );
+      // navigation("/portal/StudentList");
     },
   });
 
   useEffect(() => {
-    const index = StudentList.findIndex((obj) => obj.id == id);
-    formik.setValues(StudentList[index]);
+    const index = studentList.data.findIndex((obj) => obj._id == id);
+    formik.setValues(studentList.data[index]);
   }, []);
 
   return (
@@ -107,25 +119,19 @@ function EditStudent() {
           </div>
           <div className="col-lg-6">
             <label>Gender</label>
-            <br />
-            <input
-              type="radio"
-              id="male"
-              name="gender"
-              value={(formik.values.gender = "Male")}
-            />
-            <label for="male">Male</label>
-            <br />
-            <input
-              type="radio"
-              id="female"
-              name="gender"
-              value={(formik.values.gender = "Female")}
-            />
-            <label for="female">Female</label>
-            {formik.errors.gender ? (
-              <span style={{ color: "red" }}> {formik.errors.gender}</span>
-            ) : null}
+            <div className="flex flex-row align-center">
+              <select name='gender' onClick={formik.handleChange}>
+                <option name="gender">
+                  -select gender-
+                </option>
+                <option name="gender" value={"male"}>
+                  Male
+                </option>
+                <option name="gender" value={"female"}>
+                  Female
+                </option>
+              </select>
+            </div>
           </div>
           <div className="col-lg-6">
             <input
