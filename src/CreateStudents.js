@@ -4,18 +4,13 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { bindActionCreators } from "redux";
-import { studentActionCreators } from "./redux/action-creators";
+import { addstudent, postStudent } from "./Redux/slice/studentSlice";
+
 
 function CreateStudents() {
   let navigation = useNavigate();
   const dispatch = useDispatch();
-  const studentList = useSelector(state => state.accountReducer);
-  const { postStudent } = bindActionCreators(studentActionCreators, dispatch);
-  const [gender, setgender] = useState();
   let [isLoading, setLoading] = useState(false);
-  const handlegender = (e) => {
-    setgender(e.target.value)
-  }
 
   const formik = useFormik({
     initialValues: {
@@ -50,14 +45,10 @@ function CreateStudents() {
       return errors;
     },
     onSubmit: async (values) => {
-      postStudent(values);
-      alert(studentList.status);
+      console.log(values);
+      dispatch(postStudent(values))
+      // dispatch(addstudent(values));
       navigation("/portal/StudentList");
-      // await axios.post(
-      //   "https://62c29ac6ff594c65675fe6f0.mockapi.io/students",
-      //   values
-      // );
-      // navigation("/portal/StudentList");
     },
   });
 

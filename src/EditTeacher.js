@@ -5,13 +5,9 @@ import { useFormik } from "formik";
 import UserContext from './usercontext';
 import { bindActionCreators } from "redux";
 import { useDispatch, useSelector } from 'react-redux';
-import { actionCreators } from './redux/action-creators';
 
 function EditTeacher() {
   const { id } = useParams();
-  const dispatch = useDispatch();
-  const teachersList = useSelector(state => state.accountReducer);
-  const { updateTeacher } = bindActionCreators(actionCreators, dispatch);
   // console.log(teachersList.data);
   // const userContextData = useContext(UserContext);
   // const teachersList = userContextData.teachers;
@@ -63,7 +59,6 @@ function EditTeacher() {
     onSubmit: async (values) => {
       try {
         setLoading(true);
-        updateTeacher(values);
         // alert(teachersList.status)
         // await axios.put(`https://62c29ac6ff594c65675fe6f0.mockapi.io/teachers/${_id}`, values);
         navigation("/portal/teachersList")
@@ -74,8 +69,8 @@ function EditTeacher() {
   })
 
   useEffect(() => {
-    const index = teachersList.data.findIndex(obj => obj._id == id);
-    formik.setValues(teachersList.data[index]);
+    // const index = teachersList.data.findIndex(obj => obj._id == id);
+    // formik.setValues(teachersList.data[index]);
   }, [])
   return (
     <div className="container">

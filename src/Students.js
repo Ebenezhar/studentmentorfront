@@ -2,25 +2,17 @@ import axios from "axios";
 import React, { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { bindActionCreators } from "redux";
-import { studentActionCreators } from "./redux/action-creators";
-import { deleteStudent } from "./redux/action-creators/student-actions";
-import UserContext from "./usercontext";
+import { fetchStudents } from "./Redux/slice/studentSlice";
 
 function Students() {
   // const userContextData = useContext(UserContext);
   // const studentsList = userContextData.students;
   const dispatch = useDispatch();
-  const studentList = useSelector(state => state.accountReducer);
-  const { readStudents, deleteStudent } = bindActionCreators(studentActionCreators, dispatch)
+  const { students = [] } = useSelector((store) => store.student);
+  console.log(students);
   const handleDelete = async (id) => {
     let ask = window.confirm("Are you sure you want to delete this Id ?");
     if (ask) {
-      deleteStudent(id);
-      alert(studentList.status)
-      // await axios.delete(
-      //   `https://62c29ac6ff594c65675fe6f0.mockapi.io/students/${id}`
-      // );
       fetchData();
     }
   };
@@ -28,7 +20,8 @@ function Students() {
     fetchData();
   }, []);
   let fetchData = async () => {
-    readStudents();
+    const data = dispatch(fetchStudents())
+    console.log(data);
     // let userData = await axios.get(
     //   "https://62c29ac6ff594c65675fe6f0.mockapi.io/students"
     // );
@@ -86,9 +79,9 @@ function Students() {
                 </tr>
               </tfoot>
               <tbody>
-                {studentList.data.map((student) => {
+                {students.map((student) => {
                   return (
-                    <tr>
+                    <tr key={student._id}>
                       <td>{student.name}</td>
                       <td>{student.section}</td>
                       <td>{student.age}</td>

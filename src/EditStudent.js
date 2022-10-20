@@ -3,20 +3,15 @@ import { useFormik } from "formik";
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { studentActionCreators } from "./redux/action-creators";
 import { bindActionCreators } from "redux";
+import { updateStudent } from "./Redux/slice/studentSlice";
 import UserContext from "./usercontext";
 
 function EditStudent() {
   const { id } = useParams();
   let navigation = useNavigate();
   const dispatch = useDispatch();
-  const studentList = useSelector(state => state.accountReducer);
-  const { updateStudent } = bindActionCreators(studentActionCreators, dispatch)
-  // let [isLoading, setLoading] = useState(false);
-
-  // const userContextData = useContext(UserContext);
-  // const StudentList = userContextData.students;
+  const { students } = useSelector((store) => store.student);
 
 
   const formik = useFormik({
@@ -35,9 +30,10 @@ function EditStudent() {
         errors.name = "Length must be greater than 5";
       } else if (values.name.length > 20) {
         errors.name = "Length must be less than 20";
-      } else if (!pattern.test(formik.values.name)) {
-        errors.name = "Enter the valid name";
       }
+      // else if (!pattern.test(formik.values.name)) {
+      //   errors.name = "Enter the valid name";
+      // }
       if (!values.section) {
         errors.section = "Please Enter the section";
       }
@@ -56,7 +52,8 @@ function EditStudent() {
     },
     onSubmit: async (values) => {
       try {
-        updateStudent(values);
+        // console.log(values);
+        dispatch(updateStudent(values))
         navigation("/portal/StudentList");
       } catch (error) {
         console.log(error);
@@ -70,8 +67,9 @@ function EditStudent() {
   });
 
   useEffect(() => {
-    const index = studentList.data.findIndex((obj) => obj._id == id);
-    formik.setValues(studentList.data[index]);
+    const index = students.findIndex((obj) => obj._id == id);
+    console.log(index);
+    formik.setValues(students[index]);
   }, []);
 
   return (

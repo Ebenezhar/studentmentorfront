@@ -3,19 +3,15 @@ import React, { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { bindActionCreators } from "redux";
-import { actionCreators } from "./redux/action-creators";
 import UserContext from "./usercontext";
 
 function Teachers() {
   const dispatch = useDispatch();
-  const teacherList = useSelector(state => state.accountReducer);
-  const { readTeachers, deleteTeacher } = bindActionCreators(actionCreators, dispatch)
   // const userContextData = useContext(UserContext);
   useEffect(() => {
     fetchData();
   }, []);
   let fetchData = async () => {
-    readTeachers();
     // let userData = await axios.get(
     //   "https://62c29ac6ff594c65675fe6f0.mockapi.io/teachers"
     // );
@@ -25,7 +21,6 @@ function Teachers() {
     let ask = window.confirm("Are you sure you want to delete this Id ?");
     if (ask) {
       try {
-        deleteTeacher(id);
         // alert(teacherList.status)
         // await axios.delete(
         //   `https://62c29ac6ff594c65675fe6f0.mockapi.io/teachers/${id}`
@@ -90,7 +85,7 @@ function Teachers() {
                 </tr>
               </tfoot>
               <tbody>
-                {teacherList.data.map((teacher) => {
+                {/* {teacherList.data.map((teacher) => {
                   return (
                     <tr>
                       <td>{teacher.name}</td>
@@ -119,7 +114,7 @@ function Teachers() {
                       </td>
                     </tr>
                   );
-                })}
+                })} */}
               </tbody>
             </table>
           </div>

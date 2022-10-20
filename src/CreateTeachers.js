@@ -3,12 +3,8 @@ import { useFormik } from "formik";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { actionCreators } from './redux/action-creators';
 
 function CreateTeachers() {
-  const dispatch = useDispatch();
-  const postData = useSelector(state => state.accountReducer);
-  const { postTeacher } = bindActionCreators(actionCreators, dispatch);
   let navigation = useNavigate();
   let [isLoading, setloading] = useState(false);
   let formik = useFormik({
@@ -55,7 +51,6 @@ function CreateTeachers() {
     },
     onSubmit: (values) => {
       try {
-        postTeacher(values);
         // alert(postData.status)
         // await axios.post('https://62c29ac6ff594c65675fe6f0.mockapi.io/teachers', values);
         // navigation("/portal/teachersList")
